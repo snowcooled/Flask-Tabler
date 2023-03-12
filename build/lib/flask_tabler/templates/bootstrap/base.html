@@ -11,8 +11,8 @@
     {%- endblock metas %}
 
     {%- block styles %}
-    <!-- Bootstrap -->
-    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
+    <!-- Tabler -->
+    <link href="{{tabler_find_resource('css/tabler.css', cdn='tabler')}}" rel="stylesheet">
     {%- endblock styles %}
     {%- endblock head %}
   </head>
@@ -24,8 +24,7 @@
     {%- endblock content %}
 
     {% block scripts %}
-    <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
-    <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
+    <script src="{{tabler_find_resource('js/tabler.js', cdn='tabler')}}"></script>
     {%- endblock scripts %}
     {%- endblock body %}
   </body>

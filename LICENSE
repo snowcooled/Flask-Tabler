@@ -1,6 +1,6 @@
-# Flask Bootstrap
+# Flask Tabler
 
-The Flask-Bootstrap portions of the code are triple licensed under the following licenses:
+The Flask-Tabler portions of the code are triple licensed under the following licenses:
 
 ## Apache 2.0 License
 
@@ -58,9 +58,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# Original Bootstrap
+# Original Tabler
 
-The original Bootstrap files, which are Copyright 2013 Twitter, Inc., are distributed under the Apache 2.0 license:
+The original Tabler files, which are Copyright 2013 Twitter, Inc., are distributed under the Apache 2.0 license:
 
 Apache License
                            Version 2.0, January 2004

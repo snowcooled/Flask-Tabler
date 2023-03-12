@@ -1,8 +1,8 @@
 import re
 
 from flask import Flask
-from flask_bootstrap import Bootstrap
-import flask_bootstrap
+from flask_tabler import Tabler
+import flask_tabler
 import requests
 
 import pytest
@@ -11,7 +11,7 @@ import pytest
 @pytest.fixture
 def app():
     app = Flask(__name__)
-    Bootstrap(app)
+    Tabler(app)
     return app
 
 
@@ -22,24 +22,24 @@ def client(app):
 
 @pytest.fixture
 def bsv():
-    bootstrap_version = re.search(r'(\d+\.\d+\.\d+)',
-                                  str(flask_bootstrap.__version__)).group(1)
-    return bootstrap_version
+    tabler_version = re.search(r'(\d+\.\d+\.\d+)',
+                                  str(flask_tabler.__version__)).group(1)
+    return tabler_version
 
 
-def test_bootstrap_version_matches(app, client, bsv):
-    bootstrap_vre = re.compile(r'Bootstrap v(\d+\.\d+\.\d+).*')
+def test_tabler_version_matches(app, client, bsv):
+    tabler_vre = re.compile(r'Tabler v(\d+\.\d+\.\d+).*')
 
     # find local version
-    local_version = bootstrap_vre.search(
-        str(client.get('/static/bootstrap/css/bootstrap.css').data)
+    local_version = tabler_vre.search(
+        str(client.get('/static/tabler/css/tabler.css').data)
     ).group(1)
 
     # find cdn version
-    cdn = app.extensions['bootstrap']['cdns']['bootstrap']
+    cdn = app.extensions['tabler']['cdns']['tabler']
     with app.app_context():
-        cdn_url = 'https:' + cdn.get_resource_url('css/bootstrap.css')
-    cdn_version = bootstrap_vre.search(requests.get(cdn_url).text).group(1)
+        cdn_url = 'https:' + cdn.get_resource_url('css/tabler.css')
+    cdn_version = tabler_vre.search(requests.get(cdn_url).text).group(1)
 
     # get package version
 

@@ -19,8 +19,8 @@ else:
 
 from .forms import render_form
 
-__version__ = '3.3.7.1.dev1'
-BOOTSTRAP_VERSION = re.sub(r'^(\d+\.\d+\.\d+).*', r'\1', __version__)
+__version__ = '0.0.1'
+TABLER_VERSION = '1.0.0-beta17' 
 JQUERY_VERSION = '1.12.4'
 HTML5SHIV_VERSION = '3.7.3'
 RESPONDJS_VERSION = '1.4.2'
@@ -38,7 +38,7 @@ class StaticCDN(object):
     """A CDN that serves content from the local application.
 
     :param static_endpoint: Endpoint to use.
-    :param rev: If ``True``, honor ``BOOTSTRAP_QUERYSTRING_REVVING``.
+    :param rev: If ``True``, honor ``TABLER_QUERYSTRING_REVVING``.
     """
 
     def __init__(self, static_endpoint='static', rev=False):
@@ -48,8 +48,8 @@ class StaticCDN(object):
     def get_resource_url(self, filename):
         extra_args = {}
 
-        if self.rev and current_app.config['BOOTSTRAP_QUERYSTRING_REVVING']:
-            extra_args['bootstrap'] = __version__
+        if self.rev and current_app.config['TABLER_QUERYSTRING_REVVING']:
+            extra_args['tabler'] = __version__
 
         return url_for(self.static_endpoint, filename=filename, **extra_args)
 
@@ -87,84 +87,84 @@ class ConditionalCDN(object):
         return self.fallback.get_resource_url(filename)
 
 
-def bootstrap_find_resource(filename, cdn, use_minified=None, local=True):
+def tabler_find_resource(filename, cdn, use_minified=None, local=True):
     """Resource finding function, also available in templates.
 
     Tries to find a resource, will force SSL depending on
-    ``BOOTSTRAP_CDN_FORCE_SSL`` settings.
+    ``TABLER_CDN_FORCE_SSL`` settings.
 
     :param filename: File to find a URL for.
     :param cdn: Name of the CDN to use.
     :param use_minified': If set to ``True``/``False``, use/don't use
                           minified. If ``None``, honors
-                          ``BOOTSTRAP_USE_MINIFIED``.
+                          ``TABLER_USE_MINIFIED``.
     :param local: If ``True``, uses the ``local``-CDN when
-                  ``BOOTSTRAP_SERVE_LOCAL`` is enabled. If ``False``, uses
+                  ``TABLER_SERVE_LOCAL`` is enabled. If ``False``, uses
                   the ``static``-CDN instead.
     :return: A URL.
     """
     config = current_app.config
 
     if None == use_minified:
-        use_minified = config['BOOTSTRAP_USE_MINIFIED']
+        use_minified = config['TABLER_USE_MINIFIED']
 
     if use_minified:
         filename = '%s.min.%s' % tuple(filename.rsplit('.', 1))
 
-    cdns = current_app.extensions['bootstrap']['cdns']
+    cdns = current_app.extensions['tabler']['cdns']
     resource_url = cdns[cdn].get_resource_url(filename)
 
-    if resource_url.startswith('//') and config['BOOTSTRAP_CDN_FORCE_SSL']:
+    if resource_url.startswith('//') and config['TABLER_CDN_FORCE_SSL']:
         resource_url = 'https:%s' % resource_url
 
     return resource_url
 
 
-class Bootstrap(object):
+class Tabler(object):
     def __init__(self, app=None):
         if app is not None:
             self.init_app(app)
 
     def init_app(self, app):
-        app.config.setdefault('BOOTSTRAP_USE_MINIFIED', True)
-        app.config.setdefault('BOOTSTRAP_CDN_FORCE_SSL', False)
+        app.config.setdefault('TABLER_USE_MINIFIED', True)
+        app.config.setdefault('TABLER_CDN_FORCE_SSL', False)
 
-        app.config.setdefault('BOOTSTRAP_QUERYSTRING_REVVING', True)
-        app.config.setdefault('BOOTSTRAP_SERVE_LOCAL', False)
+        app.config.setdefault('TABLER_QUERYSTRING_REVVING', True)
+        app.config.setdefault('TABLER_SERVE_LOCAL', False)
 
-        app.config.setdefault('BOOTSTRAP_LOCAL_SUBDOMAIN', None)
+        app.config.setdefault('TABLER_LOCAL_SUBDOMAIN', None)
 
         blueprint = Blueprint(
-            'bootstrap',
+            'tabler',
             __name__,
             template_folder='templates',
             static_folder='static',
-            static_url_path=app.static_url_path + '/bootstrap',
-            subdomain=app.config['BOOTSTRAP_LOCAL_SUBDOMAIN'])
+            static_url_path=app.static_url_path + '/tabler',
+            subdomain=app.config['TABLER_LOCAL_SUBDOMAIN'])
 
         # add the form rendering template filter
         blueprint.add_app_template_filter(render_form)
 
         app.register_blueprint(blueprint)
 
-        app.jinja_env.globals['bootstrap_is_hidden_field'] =\
+        app.jinja_env.globals['tabler_is_hidden_field'] =\
             is_hidden_field_filter
-        app.jinja_env.globals['bootstrap_find_resource'] =\
-            bootstrap_find_resource
+        app.jinja_env.globals['tabler_find_resource'] =\
+            tabler_find_resource
         app.jinja_env.add_extension('jinja2.ext.do')
 
         if not hasattr(app, 'extensions'):
             app.extensions = {}
 
-        local = StaticCDN('bootstrap.static', rev=True)
+        local = StaticCDN('tabler.static', rev=True)
         static = StaticCDN()
 
         def lwrap(cdn, primary=static):
-            return ConditionalCDN('BOOTSTRAP_SERVE_LOCAL', primary, cdn)
+            return ConditionalCDN('TABLER_SERVE_LOCAL', primary, cdn)
 
-        bootstrap = lwrap(
-            WebCDN('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/%s/' %
-                   BOOTSTRAP_VERSION), local)
+        tabler = lwrap(
+            WebCDN('//cdn.jsdelivr.net/npm/@tabler/core@%s/dist/js/tabler.min.js' %
+                   TABLER_VERSION), local)
 
         jquery = lwrap(
             WebCDN('//cdnjs.cloudflare.com/ajax/libs/jquery/%s/' %
@@ -178,11 +178,11 @@ class Bootstrap(object):
             WebCDN('//cdnjs.cloudflare.com/ajax/libs/respond.js/%s/' %
                    RESPONDJS_VERSION))
 
-        app.extensions['bootstrap'] = {
+        app.extensions['tabler'] = {
             'cdns': {
                 'local': local,
                 'static': static,
-                'bootstrap': bootstrap,
+                'tabler': tabler,
                 'jquery': jquery,
                 'html5shiv': html5shiv,
                 'respond.js': respondjs,
@@ -191,8 +191,8 @@ class Bootstrap(object):
 
         # setup support for flask-nav
         renderers = app.extensions.setdefault('nav_renderers', {})
-        renderer_name = (__name__ + '.nav', 'BootstrapRenderer')
-        renderers['bootstrap'] = renderer_name
+        renderer_name = (__name__ + '.nav', 'TablerRenderer')
+        renderers['tabler'] = renderer_name
 
-        # make bootstrap the default renderer
+        # make tabler the default renderer
         renderers[None] = renderer_name
