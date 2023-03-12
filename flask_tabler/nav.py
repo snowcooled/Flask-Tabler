@@ -3,7 +3,7 @@ from dominate import tags
 from visitor import Visitor
 
 
-class BootstrapRenderer(Visitor):
+class TablerRenderer(Visitor):
     def __init__(self, html5=True, id=None):
         self.html5 = html5
         self._in_dropdown = False

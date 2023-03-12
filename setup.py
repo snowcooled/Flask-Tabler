@@ -8,16 +8,16 @@ def read(fname):
 
 
 setup(
-    name='Flask-Bootstrap',
-    version='3.3.7.2.dev1',
-    url='http://github.com/mbr/flask-bootstrap',
+    name='Flask-Tabler',
+    version='0.0.1',
+    url='http://github.com/snowcool/flask-tabler',
     license='BSD',
-    author='Marc Brinkmann',
-    author_email='git@marcbrinkmann.de',
-    description='An extension that includes Bootstrap in your '
+    author='Snow Cool',
+    author_email='snowcooled@qq.com',
+    description='An extension that includes Tabler in your '
     'project, without any boilerplate code.',
     long_description=read('README.rst'),
-    packages=['flask_bootstrap'],
+    packages=['flask_tabler'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',

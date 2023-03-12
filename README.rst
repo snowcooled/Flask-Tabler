@@ -1,13 +1,13 @@
 ===============
-Flask-Bootstrap
+Flask-Tabler
 ===============
 
-.. image:: https://travis-ci.org/mbr/flask-bootstrap.png?branch=master
-   :target: https://travis-ci.org/mbr/flask-bootstrap
+.. image:: https://travis-ci.org/mbr/flask-tabler.png?branch=master
+   :target: https://travis-ci.org/mbr/flask-tabler
 
-Flask-Bootstrap packages `Bootstrap
-<http://getbootstrap.com>`_ into an extension that mostly consists
-of a blueprint named 'bootstrap'. It can also create links to serve Bootstrap
+Flask-Tabler packages `Tabler
+<http://gettabler.com>`_ into an extension that mostly consists
+of a blueprint named 'tabler'. It can also create links to serve Tabler
 from a CDN and works with no boilerplate code in your application.
 
 Usage
@@ -15,15 +15,15 @@ Usage
 
 Here is an example::
 
-  from flask_bootstrap import Bootstrap
+  from flask_tabler import Tabler
 
   [...]
 
-  Bootstrap(app)
+  Tabler(app)
 
 This makes some new templates available, containing blank pages that include all
-bootstrap resources, and have predefined blocks where you can put your content.
+tabler resources, and have predefined blocks where you can put your content.
 
-As of version 3, Flask-Bootstrap has a `proper documentation
-<http://pythonhosted.org /Flask-Bootstrap>`_, which you can check for more
+As of version 3, Flask-Tabler has a `proper documentation
+<http://pythonhosted.org /Flask-Tabler>`_, which you can check for more
 details.
